@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-anton), "Arial Black", sans-serif;
+  --font-body: var(--font-grotesk), "Helvetica Neue", ui-sans-serif, sans-serif;
+  --color-pitch: #0a0f0a;
+  --color-chalk: #f0ead6;
+  --color-blaze: #ff6a2a;
+  --color-neon: #9fe870;
+  --color-line: rgba(240, 234, 214, 0.14);
+}
+
+html,
+body {
+  height: 100%;
+  background: #050805;
+  color: var(--color-chalk);
+  font-family: var(--font-body);
+  overscroll-behavior: none;
+}
+
+::selection {
+  background: #9fe870;
+  color: #050805;
+}
+
+/* Calm cursor policy: arrow everywhere, hand only on real actions. */
+button:not(:disabled),
+[role="button"],
+label {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+input {
+  cursor: text;
+}
+
+/* ---------- texture helpers ---------- */
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.glass {
+  background: linear-gradient(160deg, rgba(16, 22, 16, 0.82), rgba(8, 12, 8, 0.9));
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(240, 234, 214, 0.1);
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.mono {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-feature-settings: "tnum";
+}
+
+/* ---------- keyframes ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes goalpop {
+  0% { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+  55% { opacity: 1; transform: scale(1.12) rotate(-3deg); }
+  100% { opacity: 1; transform: scale(1) rotate(-3deg); }
+}
+@keyframes pulsedot {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes streak {
+  0% { transform: translateX(-120%) skewX(-16deg); }
+  100% { transform: translateX(240%) skewX(-16deg); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@keyframes coinspin {
+  0%   { transform: rotateY(0deg) scale(1); }
+  50%  { transform: rotateY(900deg) scale(1.25); }
+  100% { transform: rotateY(1800deg) scale(1); }
+}
+@keyframes tosstext {
+  0%, 60% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.coin-spin { animation: coinspin 1.25s cubic-bezier(0.25, 0.6, 0.3, 1) both; }
+.toss-text { animation: tosstext 0.5s 1.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+.anim-rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-rise-1 { animation: rise 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-rise-2 { animation: rise 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-rise-3 { animation: rise 0.7s 0.24s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-goal { animation: goalpop 0.55s cubic-bezier(0.22, 1.4, 0.36, 1) both; }
+.breathe { animation: breathe 2.2s ease-in-out infinite; }
+
+/* mode cards */
+.mode-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s, background 0.3s;
+}
+.mode-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(240, 234, 214, 0.07), transparent);
+  transform: translateX(-120%) skewX(-16deg);
+}
+.mode-card:hover::before { animation: streak 0.9s ease; }
+.mode-card:hover { transform: translateY(-3px); border-color: rgba(159, 232, 112, 0.45); }
+.mode-card:active { transform: translateY(-1px) scale(0.99); }
+
+/* thin scrollbars */
+.scroll-thin::-webkit-scrollbar { width: 5px; }
+.scroll-thin::-webkit-scrollbar-thumb { background: rgba(240, 234, 214, 0.18); border-radius: 3px; }
+.scroll-thin::-webkit-scrollbar-track { background: transparent; }
+
+/* outline title text */
+.text-stroke {
+  -webkit-text-stroke: 1.5px rgba(240, 234, 214, 0.55);
+  color: transparent;
+}
